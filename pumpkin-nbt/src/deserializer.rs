@@ -308,11 +308,11 @@ impl<'de, R: Read> de::Deserializer<'de> for &mut Deserializer<R> {
         V: Visitor<'de>,
     {
         if let Some(tag_id) = self.tag_to_deserialize_stack.pop() {
-            if tag_id != COMPOUND_ID {
-                return Err(Error::SerdeError(format!(
-                    "Trying to deserialize a map without a compound ID (with id {tag_id})"
-                )));
-            }
+            // if tag_id != COMPOUND_ID {
+            //     return Err(Error::SerdeError(format!(
+            //         "Trying to deserialize a map without a compound ID (with id {tag_id})"
+            //     )));
+            // }
         } else {
             let next_byte = self.input.get_u8_be()?;
             if next_byte != COMPOUND_ID {
