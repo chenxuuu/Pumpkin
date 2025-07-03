@@ -214,10 +214,8 @@ impl<'de, R: Read> de::Deserializer<'de> for &mut Deserializer<R> {
                             value.into_deserializer(),
                         )?,
                     NbtTag::ByteArray(value) => {
-                        // For compatibility, we serialize byte arrays as Vec<i8>
-                        // It could be probably changed in the future
-                        let array: Vec<_> = value.iter().map(|&byte| byte as i8).collect();
-                        visitor.visit_seq::<SeqDeserializer<IntoIter<i8>, Error>>(
+                        let array: Vec<_> = value.iter().map(|&byte| byte as u8).collect();
+                        visitor.visit_seq::<SeqDeserializer<IntoIter<u8>, Error>>(
                             array.into_deserializer(),
                         )?
                     }
