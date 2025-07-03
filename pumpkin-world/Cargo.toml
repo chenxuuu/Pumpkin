@@ -48,6 +48,8 @@ lru = "0.15.0"
 tokio-util = { version = "0.7.15", features = ["rt"] }
 num_cpus = "1.17.0"
 
+serde_path_to_error = "*"
+
 [dev-dependencies]
 criterion = { version = "0.6", features = ["html_reports", "async_tokio"] }
 temp-dir = "0.1.16"

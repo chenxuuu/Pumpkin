@@ -89,8 +89,15 @@ impl ChunkData {
             return Err(ChunkParsingError::ChunkNotGenerated);
         }
 
-        let chunk_data = from_bytes::<ChunkNbt>(chunk_data)
-            .map_err(|e| ChunkParsingError::ErrorDeserializingChunk(e.to_string()))?;
+        let mut de = pumpkin_nbt::deserializer::Deserializer::new(&chunk_data[..], true);
+
+        let chunk_data = serde_path_to_error::deserialize::<_, ChunkNbt>(&mut de)
+            .map_err(|e| {
+                log::error!("Failed to deserialize chunk data at path {}: {:?}", e.path(), e.inner());
+                //log::error!("Chunk data: {:?}", chunk_data);
+                //ChunkParsingError::ErrorDeserializingChunk(e.to_string());
+                panic!("stop");
+            })?;
 
         if chunk_data.light_correct {
             for section in &chunk_data.sections {
